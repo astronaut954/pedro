@@ -1,0 +1,10 @@
+/* Gradiente */
+#cor2 {
+  transition: stop-color 1.2s ease;
+}
+
+/* Transição para o texto */
+.meuTexto {
+  transition: fill 0.8s ease;
+  cursor: pointer;
+}
