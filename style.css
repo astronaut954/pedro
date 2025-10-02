@@ -2,157 +2,203 @@
    RESET + BASE
    ========================= */
 body {
-    margin: 0;
-    background-color: #000000;
-    cursor: none;
+  margin: 0;
+  background-color: #000000;
+  cursor: none;
 }
 
-a, button, input, textarea, select, .hover-target {
-    cursor: none;
+a,
+button,
+input,
+textarea,
+select,
+.hover-target {
+  cursor: none;
 }
 
 /* =========================
    LAYOUT PRINCIPAL
    ========================= */
 .banner {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-    height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  height: 100vh;
 }
 
 #mountain {
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
 #mountain svg {
-    width: 100%;
-    height: 100%;
-    object-position: center;
+  width: 100%;
+  height: 100%;
+  object-position: center;
 }
 
 .svg-overlay {
-    position: absolute;
-    pointer-events: none;
-    text-align: center;
-    width: 80%;
-    max-width: 700px;
+  position: absolute;
+  pointer-events: none;
+  text-align: center;
+  width: 80%;
+  max-width: 700px;
 }
 
-.svg-overlay img {
-    width: calc(15px + 35vmin);
-    height: auto;
-    margin-bottom: clamp(10px, 5vw, 10px);
+#svg-container-compacto {
+  width: calc(15px + 35vmin);
+  height: auto;
+  display: block;
+  margin: auto;
+  margin-bottom: clamp(10px, 5vw, 10px);
 }
 
 .svg-overlay-content h1 {
-    font-family: "Divenire Mono Black", monospace;
-    font-size: calc(15px + 2vmin);
-    line-height: 85%;
-    letter-spacing: -3px;
-    margin-bottom: clamp(-10px, 5vw, -10px);
+  display: ruby;
+  font-family: "Divenire Mono Black", monospace;
+  font-size: calc(15px + 2vmin);
+  line-height: 85%;
+  letter-spacing: -3px;
+  margin-bottom: clamp(-10px, 5vw, -10px);
 }
 
 .svg-overlay-content p {
-    font-family: "Divenire Mono Light", monospace;
-    font-size: calc(12px + 0.5vmin);
-    line-height: 120%;
-    text-align: left;
+  font-family: "Divenire Mono Light", monospace;
+  font-size: calc(12px + 0.5vmin);
+  line-height: 120%;
+  text-align: left;
 }
 
 /* =========================
    TEXTO DIGITAÇÃO (TYPEWRITER)
    ========================= */
 #typewriter::after {
-    content: "|";
-    margin-left: 4px;
-    animation: blink 0.7s infinite;
-    color: black;
+  content: "|";
+  margin-left: 4px;
+  animation: blink 0.7s infinite;
+  color: black;
 }
 
 @keyframes blink {
-    0%   { opacity: 1; }
-    50%  { opacity: 0; }
-    100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* =========================
    CURSOR CUSTOMIZADO
    ========================= */
 #light {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    pointer-events: none;
-    background: radial-gradient(circle, rgba(236,193,19,1) 0%, rgba(236,193,19,0) 40%);
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%);
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(236, 193, 19, 1) 0%,
+    rgba(236, 193, 19, 0) 40%
+  );
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
 }
 
 #light.show {
-    opacity: 1;
-    transition: opacity 0.3s ease-out; /* aparece rápido */
+  opacity: 1;
+  transition: opacity 0.3s ease-out; /* aparece rápido */
 }
 
 #light.hide {
-    opacity: 0;
-    transition: opacity 1.5s ease-out; /* desaparece devagar */
+  opacity: 0;
+  transition: opacity 1.5s ease-out; /* desaparece devagar */
 }
 
 #star {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
-    pointer-events: none;
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%);
-    z-index: 1001;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%);
+  z-index: 1001;
 }
 
 .hide-star {
-    display: none;
+  display: none;
 }
 
 /* =========================
    ANIMAÇÕES CURSOR
 ========================= */
 @keyframes lightPulse {
-    0%   { transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%) scale(1); }
-    50%  { transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%) scale(1.2); }
-    100% { transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%) scale(1); }
+  0% {
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
+      scale(1);
+  }
+  50% {
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
+      scale(1.2);
+  }
+  100% {
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
+      scale(1);
+  }
 }
 
 @keyframes starSpin {
-    0%   { transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%) rotate(45deg); }
+  0% {
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
+      rotate(0deg);
+  }
+  100% {
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
+      rotate(45deg);
+  }
 }
 
 /* Estados hover */
 .cursor-hover #light {
-    animation: lightPulse 1s ease-in-out infinite;
+  animation: lightPulse 1s ease-in-out infinite;
 }
 
 .cursor-hover #star {
-    transform: translate3d(var(--x,0), var(--y,0), 0) translate(-50%, -50%) rotate(45deg);
-    transition: transform 0.3s ease-in-out;
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
+    rotate(45deg);
+  transition: transform 0.3s ease-in-out;
 }
 
 /* Estado de saída suave */
 .cursor-exit #star {
-    transform: translate3d(var(--x,0), var(--y,0), 0) translate(-50%, -50%) rotate(0deg);
-    transition: transform 0.3s ease-out;
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
+    rotate(0deg);
+  transition: transform 0.3s ease-out;
 }
 
 .cursor-exit #light {
-    transform: translate3d(var(--x,0), var(--y,0), 0) translate(-50%, -50%) scale(1);
-    transition: transform 0.5s ease-out;
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
+    scale(1);
+  transition: transform 0.5s ease-out;
+}
+
+span.letter {
+  display: inline-block;
+  transition: color 0.3s linear;
+}
+
+svg polygon,
+svg path {
+  transition: fill 0.3s linear;
 }

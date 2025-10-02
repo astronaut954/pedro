@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const cor2 = document.getElementById('cor2');
-  const retangulo = document.getElementById('meuRetangulo');
-  const textos = document.querySelectorAll('.meuTexto');
+document.addEventListener("DOMContentLoaded", () => {
+  const cor2 = document.getElementById("cor2");
+  const retangulo = document.getElementById("meuRetangulo");
+  const textos = document.querySelectorAll(".meuTexto");
 
   const corOriginalGradiente = "#2ecc71";
   const corOriginalTexto = "#333";
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let timeout;
 
   function setStopColor(color) {
-    cor2.setAttribute('stop-color', color);
+    cor2.setAttribute("stop-color", color);
   }
 
   function ativarGradiente(corHover) {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   retangulo.addEventListener("mouseleave", restaurarGradiente);
 
   // Textos → mudam gradiente e também a própria cor de preenchimento
-  textos.forEach(el => {
+  textos.forEach((el) => {
     const corHover = el.dataset.color;
 
     el.addEventListener("mouseenter", () => {
@@ -41,4 +41,27 @@ document.addEventListener('DOMContentLoaded', () => {
       el.setAttribute("fill", corOriginalTexto);
     });
   });
+
+  function getTextoTags() {
+    const textoTags = document.querySelectorAll(".texto");
+    return textoTags;
+  }
+
+  function transformTextInSpansWithLabelClass() {
+    const textoTags = getTextoTags();
+    for (let index = 0; index < textoTags.length; index++) {
+      const element = textoTags[index];
+      const arrayOfLetters = element.textContent.split("");
+      element.textContent = "";
+      for (let index = 0; index < arrayOfLetters.length; index++) {
+        const elementLetter = arrayOfLetters[index];
+        const letterSpanTag = document.createElement("span");
+        letterSpanTag.textContent = elementLetter;
+        letterSpanTag.className = "letter";
+        element.appendChild(letterSpanTag);
+      }
+    }
+  }
+
+  transformTextInSpansWithLabelClass();
 });

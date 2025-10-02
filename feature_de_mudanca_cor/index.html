@@ -1,168 +1,199 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Cursor Glow com SVG e Touch</title>
-	<style>
-		body {
-			background: #111;
-			color: #fff;
-			font-size: 32px;
-			line-height: 1.6;
-			padding: 40px;
-			cursor: none;
-		}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cursor Glow com SVG e Touch</title>
+    <style>
+      body {
+        background: #111;
+        color: #fff;
+        font-size: 32px;
+        line-height: 1.6;
+        padding: 40px;
+        cursor: none;
+      }
 
-		.cursor-glow {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 200px;
-			height: 200px;
-			pointer-events: none;
-			border-radius: 50%;
-			background: radial-gradient(circle, rgba(255, 255, 0, 0.6) 0%, rgba(255, 255, 0, 0) 70%);
-			transform: translate(-50%, -50%);
-			z-index: 9999;
-		}
+      .cursor-glow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 200px;
+        pointer-events: none;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 0, 0.6) 0%,
+          rgba(255, 255, 0, 0) 70%
+        );
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+      }
 
-		span.letter {
-			display: inline-block;
-			transition: color 0.3s linear;
-		}
+      span.letter {
+        display: inline-block;
+        transition: color 0.3s linear;
+      }
 
-		/* tamanho padrão universal */
-		svg {
-			width: 300px;
-			height: 300px;
-		}
+      /* tamanho padrão universal */
+      svg {
+        width: 300px;
+        height: 300px;
+      }
 
-		svg polygon,
-		svg path {
-			fill: white;
-			transition: fill 0.3s linear;
-		}
-	</style>
-</head>
-<body>
+      svg polygon,
+      svg path {
+        fill: white;
+        transition: fill 0.3s linear;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Cursor de luz -->
+    <div class="cursor-glow"></div>
 
-	<!-- Cursor de luz -->
-	<div class="cursor-glow"></div>
+    <!-- Texto que recebe efeito -->
+    <p class="texto">
+      Esta é uma experiência incrível com cursor de luz em gradiente amarelo.
+    </p>
 
-	<!-- Texto que recebe efeito -->
-	<p id="texto">
-		Esta é uma experiência incrível com cursor de luz em gradiente amarelo.
-	</p>
+    <!-- Contêineres para SVGs externos -->
+    <div id="svg-container-compacto"></div>
+    <div id="svg-container-horizontal"></div>
+    <!-- Para novos SVGs: <div id="svg-container-novo"></div> -->
 
-	<!-- Contêineres para SVGs externos -->
-	<div id="svg-container-compacto"></div>
-	<div id="svg-container-horizontal"></div>
-	<!-- Para novos SVGs: <div id="svg-container-novo"></div> -->
+    <script>
+      // Função para carregar SVG externo em um container
+      function carregarSVG(url, containerId) {
+        fetch(url)
+          .then((res) => res.text())
+          .then((svgText) => {
+            document.getElementById(containerId).innerHTML = svgText;
+            updateSVGTargets();
+          })
+          .catch((err) => console.error("Erro ao carregar SVG:", err));
+      }
 
-	<script>
-		// Função para carregar SVG externo em um container
-		function carregarSVG(url, containerId) {
-			fetch(url)
-				.then(res => res.text())
-				.then(svgText => {
-					document.getElementById(containerId).innerHTML = svgText;
-					updateSVGTargets();
-				})
-				.catch(err => console.error("Erro ao carregar SVG:", err));
-		}
+      // Carregando os SVGs existentes
+      carregarSVG("logo_compactoblack.svg", "svg-container-compacto");
+      carregarSVG("logo_horizontal[black].svg", "svg-container-horizontal");
 
-		// Carregando os SVGs existentes
-		carregarSVG("logo_compactoblack.svg", "svg-container-compacto");
-		carregarSVG("logo_horizontal[black].svg", "svg-container-horizontal");
+      const glow = document.querySelector(".cursor-glow");
 
-		const glow = document.querySelector('.cursor-glow');
-		const p = document.getElementById('texto');
+      // Lista de todos os <polygon> e <path> que receberão efeito
+      let svgTargets = [];
+      function updateSVGTargets() {
+        svgTargets = Array.from(document.querySelectorAll("svg")).reduce(
+          (acc, s) =>
+            acc.concat(Array.from(s.querySelectorAll("polygon, path"))),
+          []
+        );
+      }
 
-		// Quebra texto em letras individuais
-		function wrapLetters(element) {
-			const words = element.textContent.split(/(\s+)/);
-			element.innerHTML = words.map(word => {
-				if (word.trim() === '') return word;
-				return word.split('').map(l => `<span class="letter">${l}</span>`).join('');
-			}).join('');
-		}
-		wrapLetters(p);
-		const letters = p.querySelectorAll('.letter');
+      // Mapas para timers de fade-out
+      const fadeTimers = new Map();
+      const svgTimers = new Map();
 
-		// Lista de todos os <polygon> e <path> que receberão efeito
-		let svgTargets = [];
-		function updateSVGTargets() {
-			svgTargets = Array.from(document.querySelectorAll('svg'))
-				.reduce((acc, s) => acc.concat(Array.from(s.querySelectorAll('polygon, path'))), []);
-		}
+      function getTextoTags() {
+        const textoTags = document.querySelectorAll(".texto");
+        console.log(textoTags);
+        return textoTags;
+      }
 
-		// Mapas para timers de fade-out
-		const fadeTimers = new Map();
-		const svgTimers = new Map();
+      function transformTextInSpansWithLabelClass() {
+        const textoTags = getTextoTags();
+        console.log(textoTags);
+        for (let index = 0; index < textoTags.length; index++) {
+          const element = textoTags[index];
+          const arrayOfLetters = element.innerHTML.split("");
+          console.log(arrayOfLetters);
+          element.innerHTML = "";
+          for (let index = 0; index < arrayOfLetters.length; index++) {
+            let elementLetter = "";
+            elementLetter =
+              arrayOfLetters[index] === " " ? "\u00A0" : arrayOfLetters[index];
+            console.log(elementLetter);
+            const letterSpanTag = document.createElement("span");
+            letterSpanTag.innerHTML = elementLetter;
+            letterSpanTag.className = "letter";
+            element.appendChild(letterSpanTag);
+          }
+        }
+      }
 
-		// Função para aplicar efeito em qualquer posição (mouse ou touch)
-		function aplicarEfeito(x, y) {
-			glow.style.left = `${x}px`;
-			glow.style.top = `${y}px`;
+      transformTextInSpansWithLabelClass();
 
-			// Letras do texto
-			letters.forEach(letter => {
-				const rect = letter.getBoundingClientRect();
-				const letterX = rect.left + rect.width / 2;
-				const letterY = rect.top + rect.height / 2;
-				const dist = Math.hypot(x - letterX, y - letterY);
+      const letters = document.querySelectorAll(".letter");
 
-				const maxDist = 250;
-				let intensity = Math.max(0, 1 - dist / maxDist);
+      console.log(letters);
 
-				if (intensity > 0.05) {
-					letter.style.color = `rgba(236, 193, 19, 1)`;
+      // Função para aplicar efeito em qualquer posição (mouse ou touch)
+      function aplicarEfeito(x, y) {
+        glow.style.left = `${x}px`;
+        glow.style.top = `${y}px`;
 
-					// reset automático
-					if (fadeTimers.has(letter)) clearTimeout(fadeTimers.get(letter));
-					const timer = setTimeout(() => {
-						letter.style.color = '';
-						fadeTimers.delete(letter);
-					}, 2000);
-					fadeTimers.set(letter, timer);
-				}
-			});
+        // Letras do texto
+        letters.forEach((letter) => {
+          const rect = letter.getBoundingClientRect();
+          const letterX = rect.left + rect.width / 2;
+          const letterY = rect.top + rect.height / 2;
+          const dist = Math.hypot(x - letterX, y - letterY);
 
-			// Polygons e paths dos SVGs
-			svgTargets.forEach(el => {
-				const rect = el.getBoundingClientRect();
-				const elX = rect.left + rect.width / 2;
-				const elY = rect.top + rect.height / 2;
-				const dist = Math.hypot(x - elX, y - elY);
+          const maxDist = 250;
+          let intensity = Math.max(0, 1 - dist / maxDist);
 
-				const maxDist = 250;
-				let intensity = Math.max(0, 1 - dist / maxDist);
+          if (intensity > 0.05) {
+            letter.style.color = `rgba(236, 193, 19, 1)`;
 
-				if (intensity > 0.05) {
-					el.style.fill = `rgba(236, 193, 19, 1)`;
+            // reset automático
+            if (fadeTimers.has(letter)) clearTimeout(fadeTimers.get(letter));
+            const timer = setTimeout(() => {
+              letter.style.color = "";
+              fadeTimers.delete(letter);
+            }, 2000);
+            fadeTimers.set(letter, timer);
+          }
+        });
 
-					// reset automático
-					if (svgTimers.has(el)) clearTimeout(svgTimers.get(el));
-					const timer = setTimeout(() => {
-						el.style.fill = 'white';
-						svgTimers.delete(el);
-					}, 2000);
-					svgTimers.set(el, timer);
-				}
-			});
-		}
+        // Polygons e paths dos SVGs
+        svgTargets.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          const elX = rect.left + rect.width / 2;
+          const elY = rect.top + rect.height / 2;
+          const dist = Math.hypot(x - elX, y - elY);
 
-		// Eventos mouse
-		document.addEventListener('mousemove', e => {
-			aplicarEfeito(e.clientX, e.clientY);
-		});
+          const maxDist = 250;
+          let intensity = Math.max(0, 1 - dist / maxDist);
 
-		// Eventos touch
-		document.addEventListener('touchmove', e => {
-			const touch = e.touches[0];
-			if (touch) aplicarEfeito(touch.clientX, touch.clientY);
-		}, { passive: true });
-	</script>
-</body>
+          if (intensity > 0.05) {
+            el.style.fill = `rgba(236, 193, 19, 1)`;
+
+            // reset automático
+            if (svgTimers.has(el)) clearTimeout(svgTimers.get(el));
+            const timer = setTimeout(() => {
+              el.style.fill = "white";
+              svgTimers.delete(el);
+            }, 2000);
+            svgTimers.set(el, timer);
+          }
+        });
+      }
+
+      // Eventos mouse
+      document.addEventListener("mousemove", (e) => {
+        aplicarEfeito(e.clientX, e.clientY);
+      });
+
+      // Eventos touch
+      document.addEventListener(
+        "touchmove",
+        (e) => {
+          const touch = e.touches[0];
+          if (touch) aplicarEfeito(touch.clientX, touch.clientY);
+        },
+        { passive: true }
+      );
+    </script>
+  </body>
 </html>

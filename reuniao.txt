@@ -1,0 +1,7 @@
+Projeto Ramoses:
+efeito de coloração deve ser aplicado em svgs e textos específicos. Somente o logo do ramoses e os textos.
+
+
+pega tudo que tiver a classe "texto-efeito".
+
+para cada elemento pego 
