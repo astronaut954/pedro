@@ -54,7 +54,7 @@
     <div class="cursor-glow"></div>
 
     <!-- Texto que recebe efeito -->
-    <p id="texto">
+    <p class="texto">
       Esta é uma experiência incrível com cursor de luz em gradiente amarelo.
     </p>
 
@@ -80,23 +80,6 @@
       carregarSVG("logo_horizontal[black].svg", "svg-container-horizontal");
 
       const glow = document.querySelector(".cursor-glow");
-      const p = document.getElementById("texto");
-
-      // Quebra texto em letras individuais
-      function wrapLetters(element) {
-        const words = element.textContent.split(/(\s+)/);
-        element.innerHTML = words
-          .map((word) => {
-            if (word.trim() === "") return word;
-            return word
-              .split("")
-              .map((l) => `<span class="letter">${l}</span>`)
-              .join("");
-          })
-          .join("");
-      }
-      wrapLetters(p);
-      const letters = p.querySelectorAll(".letter");
 
       // Lista de todos os <polygon> e <path> que receberão efeito
       let svgTargets = [];
@@ -111,6 +94,39 @@
       // Mapas para timers de fade-out
       const fadeTimers = new Map();
       const svgTimers = new Map();
+
+      function getTextoTags() {
+        const textoTags = document.querySelectorAll(".texto");
+        console.log(textoTags);
+        return textoTags;
+      }
+
+      function transformTextInSpansWithLabelClass() {
+        const textoTags = getTextoTags();
+        console.log(textoTags);
+        for (let index = 0; index < textoTags.length; index++) {
+          const element = textoTags[index];
+          const arrayOfLetters = element.innerHTML.split("");
+          console.log(arrayOfLetters);
+          element.innerHTML = "";
+          for (let index = 0; index < arrayOfLetters.length; index++) {
+            let elementLetter = "";
+            elementLetter =
+              arrayOfLetters[index] === " " ? "\u00A0" : arrayOfLetters[index];
+            console.log(elementLetter);
+            const letterSpanTag = document.createElement("span");
+            letterSpanTag.innerHTML = elementLetter;
+            letterSpanTag.className = "letter";
+            element.appendChild(letterSpanTag);
+          }
+        }
+      }
+
+      transformTextInSpansWithLabelClass();
+
+      const letters = document.querySelectorAll(".letter");
+
+      console.log(letters);
 
       // Função para aplicar efeito em qualquer posição (mouse ou touch)
       function aplicarEfeito(x, y) {
