@@ -52,7 +52,6 @@ body {
   position: relative;
   z-index: 5;
   height: 75%;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center; /* centraliza vertical */
@@ -101,10 +100,16 @@ body {
   color: black;
 }
 
-.overlay h1,
-.overlay p {
-  width: 80%;
+#svg-container-compacto {
+  width: calc(15px + 35vmin);
+  height: auto;
+  display: block;
+  margin-bottom: clamp(10px, 5vw, 10px);
+}
+
+.svg-overlay-content {
   max-width: 700px;
+  width: 80%;
 }
 
 /* Cursor piscando */
