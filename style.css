@@ -1,204 +1,146 @@
-/* =========================
-   RESET + BASE
-   ========================= */
-body {
+* {
   margin: 0;
-  background-color: #000000;
-  cursor: none;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-a,
-button,
-input,
-textarea,
-select,
-.hover-target {
-  cursor: none;
+body {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  overflow-x: hidden;
 }
 
-/* =========================
-   LAYOUT PRINCIPAL
-   ========================= */
-.banner {
+#layer1,
+#layer2 {
+  transform: translateX(-50%) scale(1.1);
+  transform-origin: center center;
+}
+
+.parallax {
   position: relative;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  height: 100vh;
-}
-
-#mountain {
   width: 100%;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
 }
 
-#mountain svg {
+/* Apenas nuvens móveis */
+#cloud1a,
+#cloud2a,
+#cloud3a,
+#cloud4a,
+#cloud1b,
+#cloud2b {
+  width: 180lvh; /* ou mais, se os deslocamentos forem grandes */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Imagens do parallax */
+.parallax img:not(.logo) {
+  position: absolute;
+  top: 0;
+  left: 50%;
   width: 100%;
   height: 100%;
-  object-position: center;
+  max-width: none;
+  object-fit: cover;
+  transform: translateX(-50%);
 }
 
-.svg-overlay {
-  position: absolute;
-  pointer-events: none;
+/* Overlay centralizado */
+.overlay {
+  position: relative;
+  z-index: 5;
+  height: 75%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centraliza vertical */
+  align-items: center; /* centraliza horizontal */
   text-align: center;
-  width: 80%;
-  max-width: 700px;
+  padding: 0; /* remove padding lateral */
 }
 
-#svg-container-compacto {
+/* Menu Button*/
+#menu-button {
+  width: calc(30px + 4vmin); /* largura do botão */
+  height: calc(52.5px + 4vmin); /* altura do botão */
+  position: fixed; /* fixa na tela */
+  top: 4lvh; /* centralizado verticalmente */
+  right: 4lvh; /* distância da borda direita (padding) */
+  z-index: 1000; /* garante que fique acima de outros elementos */
+  cursor: pointer; /* cursor de link */
+  filter: invert();
+  mix-blend-mode: exclusion;
+}
+
+/* Logo */
+.overlay .logo {
   width: calc(15px + 35vmin);
   height: auto;
-  display: block;
-  margin: auto;
-  margin-bottom: clamp(10px, 5vw, 10px);
+  margin-bottom: 4.5vmin;
 }
 
-.svg-overlay-content h1 {
-  display: ruby;
+/* Título */
+.overlay h1 {
   font-family: "Divenire Mono Black", monospace;
   font-size: calc(15px + 2vmin);
   line-height: 85%;
   letter-spacing: -3px;
-  margin-bottom: clamp(-10px, 5vw, -10px);
+  margin-bottom: 0.5vmin;
+  color: black;
 }
 
-.svg-overlay-content p {
+/* Parágrafo */
+.overlay p {
   font-family: "Divenire Mono Light", monospace;
   font-size: calc(12px + 0.5vmin);
   line-height: 120%;
   text-align: left;
+  color: black;
 }
 
-/* =========================
-   TEXTO DIGITAÇÃO (TYPEWRITER)
-   ========================= */
+.overlay h1,
+.overlay p {
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Cursor piscando */
 #typewriter::after {
   content: "|";
-  margin-left: 4px;
+  margin-left: 2px;
   animation: blink 0.7s infinite;
   color: black;
 }
 
 @keyframes blink {
-  0% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
     opacity: 0;
   }
-  100% {
-    opacity: 1;
-  }
 }
 
-/* =========================
-   CURSOR CUSTOMIZADO
-   ========================= */
-#light {
+#menu-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  inset: 0;
+  background: black;
   pointer-events: none;
-  background: radial-gradient(
-    circle,
-    rgba(236, 193, 19, 1) 0%,
-    rgba(236, 193, 19, 0) 40%
-  );
-  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%);
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.5s ease-out;
+  opacity: 1; /* sempre visível */
+  transform: translateY(-100%); /* começa fora da tela (acima) */
+  transition: transform 0.6s ease-in-out;
+  z-index: 999;
 }
 
-#light.show {
-  opacity: 1;
-  transition: opacity 0.3s ease-out; /* aparece rápido */
+/* Quando ativado, entra no campo de visão */
+#menu-overlay.active {
+  transform: translateY(0);
 }
 
-#light.hide {
-  opacity: 0;
-  transition: opacity 1.5s ease-out; /* desaparece devagar */
-}
-
-#star {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%);
-  z-index: 1001;
-}
-
-.hide-star {
-  display: none;
-}
-
-/* =========================
-   ANIMAÇÕES CURSOR
-========================= */
-@keyframes lightPulse {
-  0% {
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
-      scale(1);
-  }
-  50% {
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
-      scale(1.2);
-  }
-  100% {
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
-      scale(1);
-  }
-}
-
-@keyframes starSpin {
-  0% {
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
-      rotate(0deg);
-  }
-  100% {
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
-      rotate(45deg);
-  }
-}
-
-/* Estados hover */
-.cursor-hover #light {
-  animation: lightPulse 1s ease-in-out infinite;
-}
-
-.cursor-hover #star {
-  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
-    rotate(45deg);
-  transition: transform 0.3s ease-in-out;
-}
-
-/* Estado de saída suave */
-.cursor-exit #star {
-  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
-    rotate(0deg);
-  transition: transform 0.3s ease-out;
-}
-
-.cursor-exit #light {
-  transform: translate3d(var(--x, 0), var(--y, 0), 0) translate(-50%, -50%)
-    scale(1);
-  transition: transform 0.5s ease-out;
-}
-
-span.letter {
-  display: inline-block;
-  transition: color 0.3s linear;
-}
-
-svg polygon,
-svg path {
-  transition: fill 0.3s linear;
+/* Quando sai, move para baixo */
+#menu-overlay.fade-out {
+  transform: translateY(100%);
 }

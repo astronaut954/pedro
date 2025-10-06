@@ -3,54 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ramoses - Brand Designer</title>
+    <title>Parallax Scroll GSAP</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-
   <body>
-    <div id="light"></div>
+    <div class="menu" id="menu-button"></div>
 
-    <svg id="star" width="20" height="20" viewBox="0 0 20 20">
-      <path
-        fill="rgba(236,193,19,1)"
-        stroke="rgba(58, 47, 4, 1)"
-        stroke-width="1"
-        d="M10,0l1.287,5.147c.439,1.756,1.81,3.127,3.566,3.566l5.147,1.287-5.147,1.287c-1.756.439-3.127,1.81-3.566,3.566l-1.287,5.147-1.287-5.147c-.439-1.756-1.81-3.127-3.566-3.566l-5.147-1.287,5.147-1.287c1.756-.439,3.127-1.81,3.566-3.566l1.287-5.147Z"
-      />
-    </svg>
+    <div id="menu-overlay">
+      <canvas id="matrix-canvas"></canvas>
+    </div>
+    <section class="parallax">
+      <img src="img/layer_2.jpg" id="layer2" />
+      <img src="img/layer_1.png" id="layer1" />
+      <img src="img/fixed_cloud_1.png" id="cloudFixed1" />
+      <img src="img/fixed_cloud_2.png" id="cloudFixed2" />
 
-    <div class="banner">
-      <div id="mountain"></div>
-      <div class="svg-overlay">
-        <div id="svg-container-compacto"></div>
-        <div class="svg-overlay-content">
-          <h1 class="texto">
-            Tudo o que construímos o fazemos por um motivo e este motivo é a
-            história que move o nosso espírito.
-          </h1>
-          <p></p>
-          <p id="typewriter">
-            Sísifo carrega uma pedra todos os dias e continua a fazer por um
-            motivo. Carregamos o fardo das nossas obrigações todos os dias e
-            continuamos a fazer por um motivo, este motivo é a história que
-            temos para contar para o mundo.
-          </p>
-        </div>
+      <div class="moving-clouds-wrapper">
+        <img src="img/moving_cloud_1a.png" id="cloud1a" />
+        <img src="img/moving_cloud_2a.png" id="cloud2a" />
+        <img src="img/moving_cloud_3a.png" id="cloud3a" />
+        <img src="img/moving_cloud_4a.png" id="cloud4a" />
+        <img src="img/moving_cloud_1b.png" id="cloud1b" />
+        <img src="img/moving_cloud_2b.png" id="cloud2b" />
       </div>
-    </div>
 
-    <div id="teste">
+      <!-- Overlay unificado -->
+      <div class="overlay">
+        <img
+          src="img/logo_compacto[black].svg"
+          alt="Logo Ramoses"
+          class="logo"
+        />
+        <h1>
+          Tudo o que construímos o fazemos por um motivo e este motivo é a
+          história que move o nosso espírito.
+        </h1>
+        <p id="typewriter">
+          Sísifo carrega uma pedra todos os dias e continua a fazer por um
+          motivo. Carregamos o fardo das nossas obrigações todos os dias e
+          continuamos a fazer por um motivo, este motivo é a história que temos
+          para contar para o mundo.
+        </p>
+      </div>
+    </section>
+    <section class="content">
+      <h1>Rest of the Website</h1>
       <p>
-        <a href="https://seulink.com" class="link-simples">espírito</a>
+        This is the normal content that shows after the parallax animation is
+        finished. Scroll down to see more.
       </p>
-    </div>
-
-    <main>
-      <!-- Conteúdo principal futuro -->
-    </main>
+    </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
