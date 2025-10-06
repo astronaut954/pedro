@@ -41,27 +41,4 @@ document.addEventListener("DOMContentLoaded", () => {
       el.setAttribute("fill", corOriginalTexto);
     });
   });
-
-  function getTextoTags() {
-    const textoTags = document.querySelectorAll(".texto");
-    return textoTags;
-  }
-
-  function transformTextInSpansWithLabelClass() {
-    const textoTags = getTextoTags();
-    for (let index = 0; index < textoTags.length; index++) {
-      const element = textoTags[index];
-      const arrayOfLetters = element.textContent.split("");
-      element.textContent = "";
-      for (let index = 0; index < arrayOfLetters.length; index++) {
-        const elementLetter = arrayOfLetters[index];
-        const letterSpanTag = document.createElement("span");
-        letterSpanTag.textContent = elementLetter;
-        letterSpanTag.className = "letter";
-        element.appendChild(letterSpanTag);
-      }
-    }
-  }
-
-  transformTextInSpansWithLabelClass();
 });
